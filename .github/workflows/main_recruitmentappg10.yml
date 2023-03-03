@@ -23,9 +23,19 @@ jobs:
 
       - name: npm install, build, and test
         run: |
+          cd recruitment
           npm install
           npm run build --if-present
           npm run test --if-present
+          
+      - name: Check dir
+        run: ls
+        
+      - name: Zip Release
+        uses: TheDoctor0/zip-release@0.7.1
+        with:
+          filename: release.zip
+          path: ./recruitment/dist/*
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
