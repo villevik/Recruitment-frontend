@@ -4,7 +4,7 @@ import axios from 'axios';
  * Create an axios instance
  */
 const api = axios.create({
-    baseURL: 'http://localhost:8080/api/',
+    baseURL: 'https://recruitmentg10.azurewebsites.net/api/',
     withCredentials: true,
     headers: { "Content-Type": "application/json"/*, 
 "Cookie": "SameSite=None"*/ }
