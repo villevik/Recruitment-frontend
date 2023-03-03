@@ -63,4 +63,4 @@ jobs:
           app-name: 'recruitmentappg10'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3F1ED7D4DFD04AD28371A4A57A54232B }}
-          package: .
+          package: release.zip
