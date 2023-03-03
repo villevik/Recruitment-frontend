@@ -1,0 +1,33 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.selected {
+  /* change cursor to pointer when hovering over a list item */
+  cursor: pointer;
+  list-style: none;
+  /* when overflow move to next line */
+  
+}
+.x {
+  /* x button */
+  background-color: rgb(251, 91, 91);
+  padding: 0.2em;
+  border-radius: 3px;
+  font-weight: bold;
+}
+li {
+  display: inline-block;
+  border: black solid 1px;
+  border-radius: 6px;
+  padding: 0.5em;
+  margin: 0.5em;
+  background-color: #7ff3b7;
+  color: #1a1a1a;
+}
+nav{
+  border-bottom: rgba(255, 255, 255, 0.87) solid 1px;
+}
