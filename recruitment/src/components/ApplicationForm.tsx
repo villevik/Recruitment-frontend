@@ -30,10 +30,16 @@ const ApplicationForm = () => {
 
     // useEffect for getting competences
     useEffect(() => {
-        console.log("Fetching competences");
+        
+        console.log("Fetching data for application form");
         try {
+            /**
+             * fetchRole - get role from backend 
+             * The backend doesn't seem to remember the role, the location state is used instead
+             */
             const fetchRole = async () => {
                 const data = await getRole();
+                console.log(data.role);
                 setRole(data.role);
                 if (data.role === 'recruiter') {
                     navigate('/admin', { state: { confirmationMessage: "You're logged in as recruiter" } });
@@ -45,8 +51,23 @@ const ApplicationForm = () => {
                     //window.location.href = '/';
                 }
             };
-            fetchRole();
-
+            //fetchRole();
+            getRole().then((data) => {
+                console.log(data.role);
+                setRole(data.role);
+                setRole(location.state.role);
+                console.log("Location role: ",location.state.role);
+                if (role === 'recruiter') {
+                    navigate('/admin', { state: { confirmationMessage: "You're logged in as recruiter" } });
+                    //window.location.href = '/admin';
+                }
+                else if (role === 'none') {
+                    console.log("no role");
+                    navigate('/', { state: { confirmationMessage: "Log in before accessing the page" } });
+                    //window.location.href = '/';
+                }
+            });
+            
             const fetchCompetences = async () => {
                 const res = await getCompetences();
                 setCompetences(res);

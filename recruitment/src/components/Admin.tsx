@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getApplications, getRole, signOut } from "../api/APIService";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { NavWrapper } from "./NavWrapper";
 import '../styles/Admin.css'
 
@@ -9,6 +9,10 @@ interface Application {
     status: string;
 }
 
+/**
+ * The recruiter interface.
+ * @returns table with applications
+ */
 export default function Admin() {
     const location = useLocation();
 
@@ -24,10 +28,11 @@ export default function Admin() {
             const fetchRole = async () => {
                 const data = await getRole();
                 setRole(data.role);
-                if(data.role === 'applicant'){
+                setRole(location.state?.role);  // This line is new. It sets the role to the role passed in the state.
+                if(role === 'applicant'){
                     window.location.href = '/apply';
                 }
-                else if(data.role === 'none'){
+                else if(role === 'none'){
                     window.location.href = '/';
                 }
             };
