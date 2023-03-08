@@ -3,8 +3,8 @@
 The app is built using Vite JS with React + Typescript JSX
 
 ## To run the site:
-  'cd recruitment'
-  'npm run dev' 
+  'cd recruitment'\n
+  'npm run dev' \n
   /or 'npm run build' and then 'npm run preview' to run production build
   
 The application consists of a register and login page which lets you register a new user or log in with an existing user in the database. 
