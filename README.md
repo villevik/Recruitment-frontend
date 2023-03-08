@@ -2,7 +2,7 @@
 
 The app is built using Vite JS with React + Typescript JSX
 
-##To run the site:
+## To run the site:
   'cd recruitment'
   'npm run dev' 
   /or 'npm run build' and then 'npm run preview' to run production build
