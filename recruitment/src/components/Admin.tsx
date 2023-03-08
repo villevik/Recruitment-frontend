@@ -15,6 +15,7 @@ interface Application {
  */
 export default function Admin() {
     const location = useLocation();
+    const navigate = useNavigate();
 
     const [role, setRole] = useState('');
     const [signOutTrigger, setSignOutTrigger] = useState(false);
@@ -26,15 +27,24 @@ export default function Admin() {
         //Get the users and the jobs from the backend.
         try{
             const fetchRole = async () => {
-                const data = await getRole();
-                setRole(data.role);
-                setRole(location.state?.role);  // This line is new. It sets the role to the role passed in the state.
-                if(role === 'applicant'){
-                    window.location.href = '/apply';
+                //const data = await getRole();
+                getRole().then((data) => {
+                    setRole(data.role);
+                    console.log(role);
+                    //setRole(location.state?.role);  // This line is new. It sets the role to the role passed in the state.
+                    if(role === 'applicant'){
+                        navigate('/apply', { state: { confirmationMessage: "You are not authorized to view the recruiter page." } });
+                        //window.location.href = '/apply';
+                    }
+                    else if(role === 'none'){
+                        navigate('/', { state: { confirmationMessage: "Log in before accesing the page." } });
+                        //window.location.href = '/';
+                    }
                 }
-                else if(role === 'none'){
-                    window.location.href = '/';
-                }
+                ).catch((err) => {
+                    console.log(err);
+                    setErrorMessage("Failed to get data from the server.");
+                });
             };
             fetchRole();
 
@@ -49,11 +59,12 @@ export default function Admin() {
                 });
                 setApplications(mappedData);
             }
-            fetchApplications();
+            if(role==='recruiter')fetchApplications();
         }catch(err){
+            console.log(err);
             setErrorMessage("Failed to get data from the server.");
         }
-    }, [signOutTrigger])
+    }, [signOutTrigger, role])
 
     /**
      * handle sign out

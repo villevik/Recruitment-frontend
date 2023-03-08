@@ -55,8 +55,8 @@ const ApplicationForm = () => {
             getRole().then((data) => {
                 console.log(data.role);
                 setRole(data.role);
-                setRole(location.state.role);
-                console.log("Location role: ",location.state.role);
+                //setRole(location.state?.role);
+                //console.log("Location role: ",location.state.role);
                 if (role === 'recruiter') {
                     navigate('/admin', { state: { confirmationMessage: "You're logged in as recruiter" } });
                     //window.location.href = '/admin';
@@ -77,7 +77,7 @@ const ApplicationForm = () => {
             console.log(err);
         }
 
-    }, [signOutTrigger]);
+    }, [signOutTrigger, role]);
 
     /**
      * handle sign out
@@ -139,13 +139,18 @@ const ApplicationForm = () => {
     };
 
     /**
-     * 
+     * When submit button is pressed, the data is sent to the backend and a confirmation/error message is displayed.
      * @param event 
      */
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         console.log(competencesData, availability);
-
+        if(competencesData.length === 0) {      // if no competences are added, the user is alerted
+            alert("Please add at least one competence");
+            return;
+        }
+        const confirmation = document.querySelector(".submittedText") as HTMLElement;
+        const error = document.querySelector(".errorText") as HTMLElement;
         saveApplication(
             competencesData.map((competence) => competence.name),
             competencesData.map((competence) => competence.years),
@@ -153,12 +158,14 @@ const ApplicationForm = () => {
             availability.toDate
         ).then((res) => {
             console.log(res);
+            confirmation.style.display = "block";
         }).catch((err) => {
             console.log(err);
+            error.style.display = "block";
         })
         // render a component with the data
-        const confirmation = document.querySelector(".submittedText") as HTMLElement;
-        confirmation.style.display = "block";
+        
+        //confirmation.style.display = "block";
     };
 
     const handleReset = () => {
@@ -265,6 +272,7 @@ const ApplicationForm = () => {
 
                 <button className="submitButton" type="submit">Submit</button>
                 <p className="submittedText" style={{ display: "none" }}>The application has been submitted! You can leave the page or submit again to update the application.</p>
+                <p className="errorText" style={{ display: "none" }}>An error occured. Please try again.</p>
             </form>
         </>
     );
