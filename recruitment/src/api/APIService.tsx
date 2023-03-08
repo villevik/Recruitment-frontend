@@ -4,10 +4,10 @@ import axios from 'axios';
  * Create an axios instance
  */
 const api = axios.create({
-    baseURL: 'https://recruitmentg10.azurewebsites.net/api/',
+    baseURL: 'https://recruitmentg10.azurewebsites.net/api/', //'http://localhost:8080/api/',
     withCredentials: true,
-    headers: { "Content-Type": "application/json"/*, 
-"Cookie": "SameSite=None"*/ }
+    headers: { "Content-Type": "application/json"
+}
     
 });
 
@@ -23,6 +23,7 @@ export const signIn = async (username: string, password: string): Promise<any> =
         username: username,
         password: password
     })
+    console.log(data);
     return data;
 }
 
@@ -50,13 +51,17 @@ export const signUp = async (firstname : string, lastname : string,  email: stri
     return data;
 }
 
+export const setAuthorizationHeader = (token: string) => {
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
+
 /**
  * getCompetences - get all competences from backend
  * @returns competences
  */
 export const getCompetences = async (): Promise<any> => {
     console.log("getCompetences");
-    const { data } = await api.get('competence/list');
+    const { data } = await api.post('competence/list');
     return data;
 }
 
@@ -87,7 +92,7 @@ export const saveApplication = async (competences: string[], experiences: number
  */
 export const getRole = async (): Promise<any> => {
     console.log("getRole");
-    const { data } = await api.get('auth/getRole');
+    const { data } = await api.post('auth/getRole');
     return data;
 }
 

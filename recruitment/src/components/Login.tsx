@@ -1,12 +1,12 @@
-import { signIn } from '../api/APIService'
+import { signIn, setAuthorizationHeader } from '../api/APIService'
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FormEvent, useState } from "react";
 import { NavWrapper } from './NavWrapper';
-/**
- * 
- * TODO: validate login
- */
 
+/**
+ * Login page
+ * @returns login form
+ */
 export default function Login() {
     const navigate = useNavigate();
     const location = useLocation();
@@ -26,16 +26,13 @@ export default function Login() {
                 console.log(res);
                 console.log(res.roles[0])
                 console.log(res.accessToken)
-                //localStorage.setItem('accessToken', res.accessToken);
-                /*document.cookie = "accessToken=" + res.accessToken;
-                // samesite cookie
-                document.cookie = "accessToken=" + res.accessToken + "; SameSite=None";*/
+                localStorage.setItem('accessToken', res.accessToken);
+                setAuthorizationHeader(res.accessToken);
+
                 if(res.roles[0] === "recruiter"){
-                    navigate('/admin', { state: { confirmationMessage: "Login was successful!" } });
-                    //window.location.href = "/admin";
+                    navigate('/admin', { state: { confirmationMessage: "Login was successful!", role: res.roles[0] } });
                 } else {
-                    navigate('/apply', { state: { confirmationMessage: "Login was successful!" } });
-                    //window.location.href = "/apply";
+                    navigate('/apply', { state: { confirmationMessage: "Login was successful!", role: res.roles[0] } });
                 }
 
             }).catch((err) => {
@@ -56,7 +53,6 @@ export default function Login() {
                 }
                 else{
                     setErrorMessage("Something went wrong");
-                    //loginButton.insertAdjacentHTML('afterend', '<p id="errorMessage" class="shake">Something went wrong</p>');
                 }
                 
             });
